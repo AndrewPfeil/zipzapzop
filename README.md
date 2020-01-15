@@ -8,6 +8,9 @@ $ python3 zipzapzop.py
 For discord api documentation see:
 https://discordpy.readthedocs.io/en/latest/
 
+For token generation:
+https://discordapp.com/developers/applications
+
 Dev plan:
 
 *UX*
