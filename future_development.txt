@@ -1,0 +1,7 @@
+currency system for battles outside of tournaments
+
+activity logger for passive currency generation
+
+autodepletion of rank and monies (inactivity and dues)
+
+set up to archive leaderboard every month and create graphs of rank changes
