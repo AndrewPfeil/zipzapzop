@@ -16,14 +16,17 @@ Dev plan:
 
 *UX*
 -member joins server
+    - bot sends welcome message with .help prompt
 
 Tournaments:
--sends "!joinswoshi", etc in main chat
--swoshi channel will become unlocked
+-sends "!compete", etc in main chat
+    - bot will assign gladiator role
+    - colloseum channel is unlocked for gladiators
 -on tourney startdate, member will receive pm with rivals and match report instructions
 -member commands:
-    !leaveswoshi
-        -member is removed from swoshi channel
+    !chill
+        -member gladiator role is removed
+        - rank saved in db, but no longer entered into new tourneys
     !result
         -member recieved pm with results survey
         -member selects win or loss and opponent

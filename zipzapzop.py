@@ -1,76 +1,84 @@
 import discord 
-client = discord.Client()
+import os
+from discord.ext import commands
 
-import json
-census = {}
+token = ''
 
-import logging
-logging.basicConfig(level=logging.INFO)
-
+client = commands.Bot(command_prefix = '.')
 
 
-## BOOT EVENT CALLBACK ##
-@client.event
-async def on_ready():
-	print('We have logged in as {0.user}'.format(client))
+## COG MANAGEMENT ##
+@client.command()
+async def load(ctx, extension):
+	client.load_extension(f'cogs.{extension}')
 
-	# LOGIN ANNOUNCEMENT
-	channel = client.get_channel(660178172670640129)
-	await channel.send('Logged on')
+@client.command()
+async def unload(ctx, extension):
+	client.unload_extension(f'cogs.{extension}')
+
+@client.command()
+async def reload(ctx, extension):
+	client.unload_extension(f'cogs.{extension}')
+	client.load_extension(f'cogs.{extension}')
+
+for filename in os.listdir('./cogs'):
+	if filename.endswith('.py'):
+		client.load_extension(f'cogs.{filename[:-3]}')
+
+
+# import json
+# census = {}
+
+# import logging
+# logging.basicConfig(level=logging.INFO)
 
 ## MESSAGE EVENT CALLBACK ##
-@client.event
-async def on_message(message):
-	if message.author == client.user:
-		return
+# @client.event
+# async def on_message(message):
+# 	if message.author == client.user:
+# 		return
 
-	if message.content.startswith('!ping'):
-		# update to include latency
-		await message.channel.send('pong!')
 
-	if message.content.startswith('+'):
-		await message.channel.send('ULTRA')
+	# if message.content.startswith('!gen_tourney'):
+	# 	# ? admin only?
+	# 	# ? future dev: autorun on datetime (15th?)
+	# 	# ? Single channel?
+	# 	for member in client.get_all_members():
+	# 		print(member.name, member.id)
+	# 	# gen_swiss(member)
+	# 	await message.channel.send('Tournament auto generation is under development.')
 
-	if message.content.startswith('!gen_tourney'):
-		# ? admin only?
-		# ? future dev: autorun on datetime (15th?)
-		# ? Single channel?
-		for member in client.get_all_members():
-			print(member.name, member.id)
-		# gen_swiss(member)
-		await message.channel.send('Tournament auto generation is under development.')
+	# if message.content.startswith('!fight'):
+	# 	# find_opponents()
+	# 	await message.channel.send('Opponent finding is not currently supported.')
 
-	if message.content.startswith('!fight'):
-		# find_opponents()
-		await message.channel.send('Opponent finding is not currently supported.')
+	# if message.content.startswith('!report'):
+	# 	# reporter = author-message.author()
+	# 	# collect_match(reporter, opponent, result)
+	# 	# confirm_match(opponent, opponent, result_check)
+	# 	# 	update_leaderboard()
+	# 	await message.channel.send('Tournament results logging is not currently supported.')
 
-	if message.content.startswith('!report'):
-		# reporter = author-message.author()
-		# collect_match(reporter, opponent, result)
-		# confirm_match(opponent, opponent, result_check)
-		# 	update_leaderboard()
-		await message.channel.send('Tournament results logging is not currently supported.')
-
-	if message.content.startswith('!leaderboard'):
-		# restrict to only display in the leaderboard channel
-		# possibly set up to auto update on month end in addition to user prompt
-		# delete old leaderboard display 
-		await message.channel.send('Leaderboard viewing is not currently supported.')
+	# if message.content.startswith('!leaderboard'):
+	# 	# restrict to only display in the leaderboard channel
+	# 	# possibly set up to auto update on month end in addition to user prompt
+	# 	# delete old leaderboard display 
+	# 	await message.channel.send('Leaderboard viewing is not currently supported.')
 	
 
 	
 
 ## GENERATE A SWISS TOURNAMENT USING GUILD LEADERBOARD AND CHANNEL MEMBERS ##
-def gen_swiss(member):
+# def gen_swiss(member):
 
-	#leaderboard = {}
-	#tourney = {}
+# 	#leaderboard = {}
+# 	#tourney = {}
 	
-	#leaderboard = load_json_to_dict('leaderboard.json', 'r')
+# 	#leaderboard = load_json_to_dict('leaderboard.json', 'r')
 
-	for member in client.get_all_members():
-	#	?try channel.get_all_mambers
-		print(member.name, member.id)
+# 	for member in client.get_all_members():
+# 	#	?try channel.get_all_mambers
+# 		print(member.name, member.id)
 	#	if member.id in leaderboard:
 	#		tourney.append(member.id, leaderboard{member.id}[rank])
 	#	else
@@ -125,7 +133,10 @@ def gen_swiss(member):
 	# with open('leaderboard.json', 'w') as outfile:
     #	json.dump(leaderboard, outfile, sort_keys = True, indent = 4,
     #       ensure_ascii = False)
+	# display leaderboard in colloseum channel 
+	# use channel.purge(limit) to clear all messages befor sending the new leaderboard
+	# note: might want to save each players stats for progress report and graph generation??
 
 
 ## BOT TOKEN ##
-client.run('NjU4MzIzMTk4OTYxNTE2NTYz.XgY6DQ.W-5W1CFXH12qCbr0nNx4ny-kPS8')
+client.run(token)
