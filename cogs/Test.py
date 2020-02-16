@@ -1,7 +1,7 @@
 import discord
 from discord.ext import commands 
 
-colloseum = 660178172670640129 # colloseum channel id
+main_channel = 660178172670640129 # colloseum channel id
 
 class Test(commands.Cog):
     
@@ -11,13 +11,13 @@ class Test(commands.Cog):
     ## BOOT EVENT CALLBACK ##
     @commands.Cog.listener()
     async def on_ready(self):
-        print('zipzapzop is ready.')
+        print('zipzapzop is now online.')
         # LOGIN ANNOUNCEMENT
-        channel = self.client.get_channel(colloseum) 
-        await channel.send('Zipzapzop is now online.')
+        channel = self.client.get_channel(main_channel) 
+        await channel.send('zipzapzop is now online.')
 
     ## LATENCY CHECK ##
-    @commands.command(aliases = ['ping', 'test'])
+    @commands.command(brief='Displays bot latency', aliases = ['ping', 'test'])
     async def latency(self, ctx):
         await ctx.send(f'Latency: {round(self.client.latency * 1000)}ms')
 

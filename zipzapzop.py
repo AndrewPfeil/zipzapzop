@@ -2,7 +2,7 @@ import discord
 import os
 from discord.ext import commands
 
-token = 
+token = ''
 
 client = commands.Bot(command_prefix = '.')
 
@@ -38,8 +38,6 @@ for filename in os.listdir('./cogs'):
 # 	if message.author == client.user:
 # 		return
 
-	# if message.content.startswith('!enter'):
-	# 	await message.channel.send('You have entered the Colloseum.')
 
 	# if message.content.startswith('!gen_tourney'):
 	# 	# ? admin only?
