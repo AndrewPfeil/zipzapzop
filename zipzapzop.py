@@ -1,29 +1,36 @@
 import discord 
+import os
 from discord.ext import commands
 
+token = 
+
 client = commands.Bot(command_prefix = '.')
+
+
+## COG MANAGEMENT ##
+@client.command()
+async def load(ctx, extension):
+	client.load_extension(f'cogs.{extension}')
+
+@client.command()
+async def unload(ctx, extension):
+	client.unload_extension(f'cogs.{extension}')
+
+@client.command()
+async def reload(ctx, extension):
+	client.unload_extension(f'cogs.{extension}')
+	client.load_extension(f'cogs.{extension}')
+
+for filename in os.listdir('./cogs'):
+	if filename.endswith('.py'):
+		client.load_extension(f'cogs.{filename[:-3]}')
+
 
 # import json
 # census = {}
 
 # import logging
 # logging.basicConfig(level=logging.INFO)
-
-
-## BOOT EVENT CALLBACK ##
-@client.event
-async def on_ready():
- 	print('zipzapzop is ready')
- 	# LOGIN ANNOUNCEMENT
- 	channel = client.get_channel(660178172670640129) #colloseum only
- 	await channel.send('Logged on')
-
-
-## LATENCY CHECK ##
-@client.command()
-async def ping(ctx):
-	await ctx.send(f'Latency: {round(client.latency * 1000)}ms')
-
 
 ## MESSAGE EVENT CALLBACK ##
 # @client.event
@@ -128,7 +135,10 @@ async def ping(ctx):
 	# with open('leaderboard.json', 'w') as outfile:
     #	json.dump(leaderboard, outfile, sort_keys = True, indent = 4,
     #       ensure_ascii = False)
+	# display leaderboard in colloseum channel 
+	# use channel.purge(limit) to clear all messages befor sending the new leaderboard
+	# note: might want to save each players stats for progress report and graph generation??
 
 
 ## BOT TOKEN ##
-client.run('')
+client.run(token)

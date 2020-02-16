@@ -1,3 +1,29 @@
+Phase 1:
+Create a discord bot with basic functionalities 
+- commands
+- events
+- cogs
+Reference tutorial videos and experiment with existing discord.py documentation
+
+Phase 2:
+- create role manager module/cog so people can opt in/out of tournaments
+- create a tournament bot to schedule the tournament on the 1st of the month
+    - random matchups
+- win reporting will be manual
+
+phase 3:
+- automate win reporting using bot -> member dms
+
+phase 4:
+- implement database/leaderboard autologging and updating during tournament play
+
+phase 5:
+- seed tournaments based on rankings
+- cosmetic updates to bot interaction
+- simplification / generalization
+
+Future: 
+
 currency system for battles outside of tournaments
 
 activity logger for passive currency generation
