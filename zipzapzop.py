@@ -1,6 +1,7 @@
 import discord 
 import os
 from discord.ext import commands
+from discord.ext.commands import has_permissions
 
 token = ''
 
@@ -8,15 +9,16 @@ client = commands.Bot(command_prefix = '.')
 
 
 ## COG MANAGEMENT ##
-@client.command()
+@client.command(hidden=True)
 async def load(ctx, extension):
 	client.load_extension(f'cogs.{extension}')
 
-@client.command()
+@client.command(hidden=True)
+@has_permissions(administrator=True)
 async def unload(ctx, extension):
 	client.unload_extension(f'cogs.{extension}')
 
-@client.command()
+@client.command(hidden=True)
 async def reload(ctx, extension):
 	client.unload_extension(f'cogs.{extension}')
 	client.load_extension(f'cogs.{extension}')

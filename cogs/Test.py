@@ -17,7 +17,7 @@ class Test(commands.Cog):
         await channel.send('zipzapzop is now online.')
 
     ## LATENCY CHECK ##
-    @commands.command(brief='Displays bot latency', aliases = ['ping', 'test'])
+    @commands.command(brief='--> Check bot latency', aliases = ['ping', 'test'])
     async def latency(self, ctx):
         await ctx.send(f'Latency: {round(self.client.latency * 1000)}ms')
 
