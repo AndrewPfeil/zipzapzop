@@ -1,5 +1,6 @@
 import discord 
 import os
+import asyncio
 from discord.ext import commands
 from discord.ext.commands import has_permissions
 
@@ -7,6 +8,15 @@ token = ''
 
 client = commands.Bot(command_prefix = '.')
 
+ ## schedule tournament test fn ##
+# async def my_background_task():
+#     await client.wait_until_ready()
+#     counter = 0
+#     channel = client.get_channel(660178172670640129)
+#     while not client.is_closed():
+#         counter += 1
+#         #await channel.send(f'{channel}: {counter}')
+#         await asyncio.sleep(10) # task runs every 60 seconds
 
 ## COG MANAGEMENT ##
 @client.command(hidden=True)
@@ -139,6 +149,8 @@ for filename in os.listdir('./cogs'):
 	# use channel.purge(limit) to clear all messages befor sending the new leaderboard
 	# note: might want to save each players stats for progress report and graph generation??
 
+
+#client.loop.create_task(my_background_task())
 
 ## BOT TOKEN ##
 client.run(token)

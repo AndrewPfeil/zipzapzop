@@ -3,16 +3,41 @@
 ## The bot must have role management permissions.
 
 import discord
-from discord.ext import commands 
+import asyncio
+import datetime
+from discord.ext import tasks, commands 
 from discord.ext.commands import has_permissions
 
 from random import randint
 import json
 
+main_channel = 433917666596487171 # colloseum channel id
+gladiator = 678719198616354834 # gladiator role id
+server_id = 433917666596487168 # Ja'Lea server id
+
 class Colloseum(commands.Cog):
     
     def __init__(self, client):
         self.client = client
+        self.index = 0
+        self.day_checker.start()
+
+
+    @tasks.loop(hours=24.0) # Daily loop
+    async def day_checker(self):
+        await self.client.wait_until_ready()
+
+        now = datetime.datetime.now()
+        channel = self.client.get_channel(main_channel) 
+
+        if now.day == 1: # if first of month
+            await self.start_tourney()
+        elif now.day > 15:
+            await channel.send('The monthly tournament has ended.')
+        else:
+            await channel.send(f'The monthly tournament in progress.')
+
+
 
 
     ## TOURNAMENT SELF REGISTRATION ##  
@@ -32,41 +57,52 @@ class Colloseum(commands.Cog):
 
 
     ## SCHEDULE TOURNAMENT AND SAVE TO JSON ## 
-    @commands.command(brief='--> Schedules tournament', hidden=True)
-    @has_permissions(administrator=True)
-    async def tourney(self,ctx):
+    async def start_tourney(self):
+        channel = self.client.get_channel(main_channel) 
+        server = self.client.get_guild(server_id)
         counter = 0
         gladiator_counter = 0
         random = 0
         tourney_dict = {} 
 
-        role = discord.utils.get(ctx.guild.roles, name='Gladiator')
+        with open(f'{server}_leaderboard.json') as json_file:
+            xp_dict = json.load(json_file)
+
+        #await channel.send(xp_dict)
+
+        role = discord.utils.get(server.roles, name='Gladiator')
+        #role = discord.Guild.get_role(self,role_id = gladiator)
 
         for member in self.client.get_all_members():
             counter = counter + 1
             if role in member.roles: 
-                rank = randint(0,100)
-                tourney_dict[member.name] = {'id' : member.id, 'rank' : rank}
+                #rank = randint(0,100) 
+                # replace rank with xp ... xp_dict[member.id][xp]
+                if f'{member.id}' in xp_dict:
+                    tourney_dict[member.name] = {'id' : member.id, 'rank' : xp_dict[f'{member.id}']['xp']}
+                else:
+                    tourney_dict[member.name] = {'id' : member.id, 'rank' : 0}
                 # print(member.name, member.id)
+                await member.send("You have been entered into this month's Ja'Lea tournament!\n\nTo withdraw from monthly tournaments, type \".withdraw\" in the main chat.\n\nPlease report your wins by sending a direct message to Genjak.")
                 gladiator_counter = gladiator_counter +1
-
-        print(tourney_dict)
 
         ranked_list = sorted(tourney_dict, key=lambda x: tourney_dict[x]['rank'])
         #await ctx.author.send('👋')
-        await ctx.send(f'{gladiator_counter}/{counter} members in Ja\'Lea have been entered into this month\'s tournament')
-        await ctx.send(ranked_list)
-        #await ctx.send(f'{tourney_dict}')
+        await channel.send(f'{gladiator_counter}/{counter} members in Ja\'Lea have been entered into this month\'s tournament')
+        #await channel.send('Please report your wins by direct messaging @Genjak.')
+        #await channel.send(ranked_list)
+        #await channel.send(f'{tourney_dict}')
 
-        with open('tourney.json', 'w') as outfile:
+        with open(f'{server.name}_tourney.json', 'w') as outfile:
             json.dump(tourney_dict, outfile)
         
 
     ## CHECK TOURNAMENT OPPONENTS ##
     @commands.command(brief='--> Check tournament opponents')
     async def rivals(self,ctx):
+        server = self.client.get_guild(server_id)
 
-        with open('tourney.json') as json_file:
+        with open(f'{server}_tourney.json') as json_file:
             tourney_dict = json.load(json_file)
 
         ranked_list = []
