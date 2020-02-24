@@ -8,7 +8,6 @@ import datetime
 from discord.ext import tasks, commands 
 from discord.ext.commands import has_permissions
 
-from random import randint
 import json
 
 main_channel = 433917666596487171 # colloseum channel id
@@ -19,10 +18,10 @@ class Colloseum(commands.Cog):
     
     def __init__(self, client):
         self.client = client
-        self.index = 0
         self.day_checker.start()
 
 
+    ## Note: this will continue after cog refresh and stack the loop. Fix in future
     @tasks.loop(hours=24.0) # Daily loop
     async def day_checker(self):
         await self.client.wait_until_ready()
@@ -32,10 +31,11 @@ class Colloseum(commands.Cog):
 
         if now.day == 1: # if first of month
             await self.start_tourney()
-        elif now.day > 15:
-            await channel.send('The monthly tournament has ended.')
+        elif now.day == 15:
+            await channel.send(f'The {now.month}/{now.year} tournament has ended.')
+        elif now.day < 15: 
+            await channel.send(f'The monthly tournament is in progress.')
         else:
-            await channel.send(f'The monthly tournament in progress.')
 
 
 
@@ -87,11 +87,8 @@ class Colloseum(commands.Cog):
                 gladiator_counter = gladiator_counter +1
 
         ranked_list = sorted(tourney_dict, key=lambda x: tourney_dict[x]['rank'])
-        #await ctx.author.send('👋')
         await channel.send(f'{gladiator_counter}/{counter} members in Ja\'Lea have been entered into this month\'s tournament')
-        #await channel.send('Please report your wins by direct messaging @Genjak.')
-        #await channel.send(ranked_list)
-        #await channel.send(f'{tourney_dict}')
+
 
         with open(f'{server.name}_tourney.json', 'w') as outfile:
             json.dump(tourney_dict, outfile)
@@ -107,6 +104,7 @@ class Colloseum(commands.Cog):
 
         ranked_list = []
         ranked_list = sorted(tourney_dict, key=lambda x: tourney_dict[x]['rank'])
+        await ctx.send(ranked_list)
 
         member = ctx.author
         for i in range(len(ranked_list)):

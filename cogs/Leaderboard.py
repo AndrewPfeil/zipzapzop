@@ -18,7 +18,7 @@ class Leaderboard(commands.Cog):
         with open(f'{server}_leaderboard.json') as json_file:
             xp_dict = json.load(json_file)
 
-        await ctx.author.send(xp_dict)
+        await ctx.author.send(json.dumps(xp_dict, indent=4, sort_keys=True))
 
 def setup(client):
     client.add_cog(Leaderboard(client))

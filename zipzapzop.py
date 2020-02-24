@@ -8,15 +8,6 @@ token = ''
 
 client = commands.Bot(command_prefix = '.')
 
- ## schedule tournament test fn ##
-# async def my_background_task():
-#     await client.wait_until_ready()
-#     counter = 0
-#     channel = client.get_channel(660178172670640129)
-#     while not client.is_closed():
-#         counter += 1
-#         #await channel.send(f'{channel}: {counter}')
-#         await asyncio.sleep(10) # task runs every 60 seconds
 
 ## COG MANAGEMENT ##
 @client.command(hidden=True)
@@ -38,11 +29,7 @@ for filename in os.listdir('./cogs'):
 		client.load_extension(f'cogs.{filename[:-3]}')
 
 
-# import json
-# census = {}
 
-# import logging
-# logging.basicConfig(level=logging.INFO)
 
 ## MESSAGE EVENT CALLBACK ##
 # @client.event
@@ -50,19 +37,6 @@ for filename in os.listdir('./cogs'):
 # 	if message.author == client.user:
 # 		return
 
-
-	# if message.content.startswith('!gen_tourney'):
-	# 	# ? admin only?
-	# 	# ? future dev: autorun on datetime (15th?)
-	# 	# ? Single channel?
-	# 	for member in client.get_all_members():
-	# 		print(member.name, member.id)
-	# 	# gen_swiss(member)
-	# 	await message.channel.send('Tournament auto generation is under development.')
-
-	# if message.content.startswith('!fight'):
-	# 	# find_opponents()
-	# 	await message.channel.send('Opponent finding is not currently supported.')
 
 	# if message.content.startswith('!report'):
 	# 	# reporter = author-message.author()
@@ -78,35 +52,6 @@ for filename in os.listdir('./cogs'):
 	# 	await message.channel.send('Leaderboard viewing is not currently supported.')
 	
 
-	
-
-## GENERATE A SWISS TOURNAMENT USING GUILD LEADERBOARD AND CHANNEL MEMBERS ##
-# def gen_swiss(member):
-
-# 	#leaderboard = {}
-# 	#tourney = {}
-	
-# 	#leaderboard = load_json_to_dict('leaderboard.json', 'r')
-
-# 	for member in client.get_all_members():
-# 	#	?try channel.get_all_mambers
-# 		print(member.name, member.id)
-	#	if member.id in leaderboard:
-	#		tourney.append(member.id, leaderboard{member.id}[rank])
-	#	else
-	#		tourney.append(member.id, 0) 
-	#		leaderboard.append(member.id, 0)
-
-	# sort tourney by rank
-	# assign oppenents as 10 closest rank (5 above, 5 below for most members)
-	# how to store this data? nested dictionaries?
-	# json the tourney? 
-
-
-## FIND THE ASSIGNED OPPONENTS OF THE ASKER FOR THE CURRENT TOURNEY
-#def find_opponents():
-	# asker = author-message.author()
-	# read tourney.json and send opponents and match status to askers dm
 
 ## PROMPT A USER TO REPORT MATCH RESULTS ##
 # def collect_match(reporter, opponent, result):
@@ -149,8 +94,6 @@ for filename in os.listdir('./cogs'):
 	# use channel.purge(limit) to clear all messages befor sending the new leaderboard
 	# note: might want to save each players stats for progress report and graph generation??
 
-
-#client.loop.create_task(my_background_task())
 
 ## BOT TOKEN ##
 client.run(token)
