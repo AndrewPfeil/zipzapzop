@@ -35,7 +35,7 @@ class Colloseum(commands.Cog):
             await channel.send(f'The {now.month}/{now.year} tournament has ended.')
         elif now.day < 15: 
             await channel.send(f'The monthly tournament is in progress.')
-        else:
+
 
 
 
